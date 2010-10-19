@@ -2,3 +2,4 @@ log/*
 .application.rb.swp
 .bundle/*
 *.db
+public/files/*

@@ -5,11 +5,13 @@ require 'dm-timestamps'
 require 'dm-validations'
 require 'dm-aggregates'
 require 'dm-migrations'
+require 'dm-paperclip'
 require 'haml'
 require 'ostruct'
 
 require 'sinatra' unless defined?(Sinatra)
 
+APP_ROOT = File.expand_path(File.dirname(__FILE__))
 configure do
   SiteConfig = OpenStruct.new(
                  :title => 'Your Application Name',
