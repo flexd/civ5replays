@@ -80,13 +80,25 @@ GEM
     fastthread (1.0.7)
     haml (3.0.21)
     i18n (0.4.1)
+    json (1.4.6)
     json_pure (1.4.6)
     paperclip (2.3.4)
       activerecord
       activesupport
     rack (1.2.1)
+    rack-flash (0.1.1)
+      rack
     rack-test (0.5.6)
       rack (>= 1.0)
+    rake (0.8.7)
+    redis (2.0.11)
+    redis-namespace (0.8.0)
+      redis (< 3.0.0)
+    resque (1.10.0)
+      json (~> 1.4.6)
+      redis-namespace (~> 0.8.0)
+      sinatra (>= 0.9.2)
+      vegas (~> 0.1.2)
     rspec (2.0.0)
       rspec-core (= 2.0.0)
       rspec-expectations (= 2.0.0)
@@ -99,10 +111,16 @@ GEM
       rspec-expectations (= 2.0.0)
     sinatra (1.0)
       rack (>= 1.0)
+    sinatra-redirect-with-flash (0.1.2)
+      rack-flash (>= 0.1.1)
+      sinatra (>= 0.9.1)
     stringex (1.1.0)
+    sunshowers (0.2.0)
     tilt (1.1)
     tzinfo (0.3.23)
     uuidtools (2.1.1)
+    vegas (0.1.8)
+      rack (>= 1.0.0)
 
 PLATFORMS
   ruby
@@ -120,7 +138,12 @@ DEPENDENCIES
   fastthread
   haml
   paperclip
+  rack-flash
   rack-test
+  rake
+  resque
   rspec
   sinatra (>= 1.0)
+  sinatra-redirect-with-flash
+  sunshowers
   tilt

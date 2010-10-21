@@ -3,3 +3,6 @@ log/*
 .bundle/*
 *.db
 public/files/*
+public/generated/*
+replays/*
+.DS_Store

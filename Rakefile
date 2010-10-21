@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'bundler/setup'
 require 'rspec/core/rake_task'
+require 'resque/tasks'
 
 task :default => :test
 task :test => :spec

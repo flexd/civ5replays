@@ -2,7 +2,7 @@ require 'rubygems'
 require "bundler/setup"
 require 'sinatra'
 require_relative 'environment'
-
+require_relative 'workers/job'
 def make_paperclip_mash(file_hash)
   mash = Mash.new
   mash['tempfile'] = file_hash[:tempfile]
@@ -26,14 +26,17 @@ helpers do
   # add your helpers here
 end
 post '/upload' do
-  halt 409, "File seems to be emtpy" unless params[:file][:tempfile].size > 0
+  redirect '/', :error => "File seems to be empty" unless params[:file][:tempfile].size > 0
   @resource = Resource.new(:file => make_paperclip_mash(params[:file]))
-  halt 409, "There were some errors processing your request...\n#{resource.errors.inspect}" unless @resource.save
+  redirect '/', :error => "There were some errors processing your request...\n#{@resource.errors.inspect}" unless @resource.save
+  @resource.async_generate_replay
+  
+  haml :processing
 
-#  haml :upload
-  Kernel.spawn('python civ5replay.py -H #{@resource.filename}.html #{@resource.filename}')
 end
-
+get '/upload' do
+  redirect '/', :notice => "Upload something!"
+end
 get '/' do
   haml :index
 end

@@ -8,22 +8,27 @@ require 'dm-migrations'
 require 'dm-paperclip'
 require 'haml'
 require 'ostruct'
-
+require 'rack-flash'
 require 'sinatra' unless defined?(Sinatra)
+require 'sinatra/redirect_with_flash'
+require 'resque'
 
 APP_ROOT = File.expand_path(File.dirname(__FILE__))
 configure do
   SiteConfig = OpenStruct.new(
-                 :title => 'Your Application Name',
-                 :author => 'Your Name',
+                 :title => 'Civilization 5 replay generator',
+                 :author => 'flexd',
                  :url_base => 'http://localhost:4567/'
                )
 
   # load models
   $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/lib")
   Dir.glob("#{File.dirname(__FILE__)}/lib/*.rb") { |lib| require File.basename(lib, '.*') }
-
+  #$LOAD_PATH.unshift("#{File.dirname(__FILE__)}/workers")
+ # Dir.glob("#{File.dirname(__FILE__)}/workers/*.rb") { |lib| require File.basename(lib, '.*') }
                
   DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{File.expand_path(File.dirname(__FILE__))}/#{Sinatra::Base.environment}.db"))
-
+  use Rack::Flash
+  enable :sessions
+  
 end
