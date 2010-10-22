@@ -2,7 +2,7 @@ require 'rubygems'
 require "bundler/setup"
 require 'sinatra'
 require_relative 'environment'
-require_relative 'workers/job'
+
 def make_paperclip_mash(file_hash)
   mash = Mash.new
   mash['tempfile'] = file_hash[:tempfile]

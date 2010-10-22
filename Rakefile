@@ -15,7 +15,7 @@ else
     t.rspec_opts = ['-cfs']
   end
 end
-
+task "resque:setup" => :environment
 namespace :db do
   desc 'Auto-migrate the database (destroys data)'
   task :migrate => :environment do

@@ -1,4 +1,4 @@
-require './environment'
+
 class Resource
   include DataMapper::Resource
   include Paperclip::Resource
@@ -15,7 +15,7 @@ class Resource
   #  unless self.file_content_type == "application/x-octet-stream" then halt 409, "This is not a Civ 5 replay" end
   #end
   def async_generate_replay
-    Resque.enqueue(Job, self.id) 
+    Resque.enqueue(ParseReplay, self.id) 
   end
   def generate_replay_file
     self.replay_file = rand(32**8).to_s(32) + ".html"
