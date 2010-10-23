@@ -15,6 +15,8 @@ GEM
     arel (1.0.1)
       activesupport (~> 3.0.0)
     builder (2.1.2)
+    carrierwave (0.5.0)
+      activesupport (~> 3.0.0)
     data_mapper (1.0.2)
       dm-aggregates (= 1.0.2)
       dm-constraints (= 1.0.2)
@@ -127,6 +129,7 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport
+  carrierwave
   data_mapper
   dm-aggregates
   dm-core

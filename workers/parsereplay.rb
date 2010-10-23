@@ -1,31 +1,26 @@
-
 def unzip(filename, destination)
    command = "unzip #{filename} -d #{destination}"
    success = system(command)
    
    success && $?.exitstatus == 0
  end
-GEN_PATH = "#{APP_ROOT}/public/generated/"
 class ParseReplay
   @queue = :replay_parser
-  def self.perform(file_id)
-    @file = Resource.get(file_id)
-    @path = "#{APP_ROOT}/public/files/#{@file.id}/original/"
-    @file_path = "#{@path}#{@file.file_file_name}"
-    @ext_path = "#{APP_ROOT}/public/files/#{@file.id}/original/extracted/"
-    if @file.file_content_type == "application/x-octet-stream" then
-      # assume its a civ5replay
-      system("python civ5replay.py -H #{APP_ROOT}/public/generated/#{@file.replay_file} #{APP_ROOT}/public/files/#{@file.id}/original/#{@file.file_file_name}")
-    elsif @file.file_content_type == "application/x-zip-compressed" then
-      if unzip(@file_path,@ext_path) then
-        puts "yay file extracted! #{Dir.new(@ext_path).entries.last}"
-        # Bad bad hack to get the damn file.
-        @ext_file = "#{@ext_path}#{Dir.new(@ext_path).entries.last}"
-        @gen_file = "#{GEN_PATH}#{@file.replay_file}"
-        system("python", "civ5replay.py", "-H#{@gen_file}", @ext_file)
-      else
-        raise "Problems unzipping file"
-      end
+  def self.perform(id)
+    @replay = Replay.get(id)
+    tempfile = @replay.original.current_path.scan(/[\/]#{@replay.name}\/(.+)[.]/).first.first
+    temppath = "#{APP_ROOT}/public/uploads/tmp/" + tempfile + ".html"
+  #  puts "temppath: #{temppath.inspect}"
+   # tempfile = temppath + tempfile.first
+    if @replay.original.current_path =~ /[.]civ5replay/ then
+      # It's a .civ5replay file
+      system("python civ5replay.py -H #{temppath} #{APP_ROOT}/public/#{@replay.original}")
+      # python script has generated a html in tf, lets save it
+      @replay.replay_file = File.read(temppath)
+      #tempfile.close
+      raise "Horrible errror!" unless @replay.save
+      p @replay.errors.full_messages
+      #puts "@replay.replay is: #{@replay.replay_file.inspect} - tf is: #{temppath.inspect}" 
     end
   end
 end

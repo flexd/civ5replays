@@ -26,16 +26,23 @@ helpers do
   # add your helpers here
 end
 post '/upload' do
-  redirect '/', :error => "File seems to be empty" unless params[:file][:tempfile].size > 0
-  @resource = Resource.new(:file => make_paperclip_mash(params[:file]))
-  redirect '/', :error => "There were some errors processing your request...\n#{@resource.errors.inspect}" unless @resource.save
-  @resource.async_generate_replay
-  
-  haml :processing
+  @replay = Replay.new
+  begin
+    @replay.original = params[:file]
+  rescue CarrierWave::IntegrityError
+    puts "wrong file silly"
+  end
+  @replay.description = params[:description]
+  p @replay.errors.full_messages
+  redirect '/', :error => "Something went wrong with saving the record: #{@replay.errors.inspect}" unless @replay.save
+  @replay.async_parse
+  #@resource.async_generate_replay
+  redirect "/replay/#{@replay.id}"
 
 end
-get '/upload' do
-  redirect '/', :notice => "Upload something!"
+get '/replay/:id' do
+  @replay = Replay.get(params[:id])
+  haml :replay
 end
 get '/' do
   haml :index

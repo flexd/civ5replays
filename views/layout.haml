@@ -7,6 +7,9 @@
     #container
       #header
         #logo
+          - if flash.has?(:error) then
+            %h3{:class=>"error"}
+              = flash[:error]
           %h1
             %a{:href => '/'}= SiteConfig.title
       #content= yield
