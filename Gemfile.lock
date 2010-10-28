@@ -117,7 +117,6 @@ GEM
       rack-flash (>= 0.1.1)
       sinatra (>= 0.9.1)
     stringex (1.1.0)
-    sunshowers (0.2.0)
     tilt (1.1)
     tzinfo (0.3.23)
     uuidtools (2.1.1)
@@ -148,5 +147,4 @@ DEPENDENCIES
   rspec
   sinatra (>= 1.0)
   sinatra-redirect-with-flash
-  sunshowers
   tilt

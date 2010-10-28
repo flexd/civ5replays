@@ -2,7 +2,5 @@ log/*
 .application.rb.swp
 .bundle/*
 *.db
-public/files/*
-public/generated/*
-replays/*
+public/uploads/*
 .DS_Store

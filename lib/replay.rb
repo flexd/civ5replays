@@ -5,10 +5,10 @@ class Replay
   property :id, Serial
   property :name, String
   property :description, Text, :required => true, :length => 0..150
-  property :original_file, String, :auto_validation => false
+  property :original_file, String
   property :replay_file, String, :auto_validation => false
   mount_uploader :original, OriginalUploader, :mount_on => :original_file
- # mount_uploader :replay, ReplayUploader, :mount_on => :replay_file
+  mount_uploader :replay, ReplayUploader, :mount_on => :replay_file
   
   before :create, :generate_name
   
