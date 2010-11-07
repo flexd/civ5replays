@@ -5,5 +5,4 @@ tmp/*
 *.db
 public/replays/*
 public/uploads/*
-replays/*
 .DS_Store

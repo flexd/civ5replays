@@ -25,6 +25,9 @@ end
 helpers do
   # add your helpers here
 end
+
+BOWTIE_AUTH = {:user => 'admin', :pass => '12345' }
+
 post '/upload' do
   @replay = Replay.new
   begin

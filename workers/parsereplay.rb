@@ -16,11 +16,11 @@ class ParseReplay
       # It's a .civ5replay file
       system("python civ5replay.py -H #{temppath} #{APP_ROOT}/public/#{@replay.original}")
       # python script has generated a html in tf, lets save it
-      @replay.replay_file = File.read(temppath)
+      @replay.replay = File.open(temppath)
       #tempfile.close
       raise "Horrible errror!" unless @replay.save
       p @replay.errors.full_messages
-      #puts "@replay.replay is: #{@replay.replay_file.inspect} - tf is: #{temppath.inspect}" 
+      puts "@replay.replay is: #{@replay.replay.inspect} - tf is: #{temppath.inspect}" 
     end
   end
 end

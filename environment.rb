@@ -14,7 +14,6 @@ require 'sinatra/redirect_with_flash'
 require 'resque'
 require 'carrierwave'
 require 'carrierwave/orm/datamapper'
-require 'tempfile'
 
 APP_ROOT = File.expand_path(File.dirname(__FILE__))
 configure do
