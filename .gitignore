@@ -3,6 +3,5 @@ tmp/*
 .application.rb.swp
 .bundle/*
 *.db
-public/replays/*
 public/uploads/*
 .DS_Store
