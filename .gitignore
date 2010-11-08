@@ -4,4 +4,5 @@ tmp/*
 .bundle/*
 *.db
 public/uploads/*
+public/replays/*
 .DS_Store

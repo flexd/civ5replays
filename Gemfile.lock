@@ -5,88 +5,26 @@ GEM
       activesupport (= 3.0.1)
       builder (~> 2.1.2)
       i18n (~> 0.4.1)
-    activerecord (3.0.1)
-      activemodel (= 3.0.1)
-      activesupport (= 3.0.1)
-      arel (~> 1.0.0)
-      tzinfo (~> 0.3.23)
     activesupport (3.0.1)
-    addressable (2.2.2)
-    arel (1.0.1)
-      activesupport (~> 3.0.0)
+    bson (1.0.4)
+    bson_ext (1.0.4)
     builder (2.1.2)
     carrierwave (0.5.0)
       activesupport (~> 3.0.0)
-    data_mapper (1.0.2)
-      dm-aggregates (= 1.0.2)
-      dm-constraints (= 1.0.2)
-      dm-core (= 1.0.2)
-      dm-migrations (= 1.0.2)
-      dm-serializer (= 1.0.2)
-      dm-timestamps (= 1.0.2)
-      dm-transactions (= 1.0.2)
-      dm-types (= 1.0.2)
-      dm-validations (= 1.0.2)
-    data_objects (0.10.2)
-      addressable (~> 2.1)
-    datamapper (1.0.2)
-      dm-aggregates (= 1.0.2)
-      dm-constraints (= 1.0.2)
-      dm-core (= 1.0.2)
-      dm-migrations (= 1.0.2)
-      dm-serializer (= 1.0.2)
-      dm-timestamps (= 1.0.2)
-      dm-transactions (= 1.0.2)
-      dm-types (= 1.0.2)
-      dm-validations (= 1.0.2)
     diff-lcs (1.1.2)
-    dm-aggregates (1.0.2)
-      dm-core (~> 1.0.2)
-    dm-constraints (1.0.2)
-      dm-core (~> 1.0.2)
-      dm-migrations (~> 1.0.2)
-    dm-core (1.0.2)
-      addressable (~> 2.2)
-      extlib (~> 0.9.15)
-    dm-do-adapter (1.0.2)
-      data_objects (~> 0.10.2)
-      dm-core (~> 1.0.2)
-    dm-migrations (1.0.2)
-      dm-core (~> 1.0.2)
-    dm-paperclip (2.4.1)
-      datamapper
-      extlib
-    dm-postgres-adapter (1.0.2)
-      dm-do-adapter (~> 1.0.2)
-      do_postgres (~> 0.10.2)
-    dm-serializer (1.0.2)
-      dm-core (~> 1.0.2)
-      fastercsv (~> 1.5.3)
-      json_pure (~> 1.4)
-    dm-timestamps (1.0.2)
-      dm-core (~> 1.0.2)
-    dm-transactions (1.0.2)
-      dm-core (~> 1.0.2)
-    dm-types (1.0.2)
-      dm-core (~> 1.0.2)
-      fastercsv (~> 1.5.3)
-      json_pure (~> 1.4)
-      stringex (~> 1.1.0)
-      uuidtools (~> 2.1.1)
-    dm-validations (1.0.2)
-      dm-core (~> 1.0.2)
-    do_postgres (0.10.2)
-      data_objects (= 0.10.2)
-    extlib (0.9.15)
-    fastercsv (1.5.3)
     fastthread (1.0.7)
     haml (3.0.22)
-    i18n (0.4.1)
+    i18n (0.4.2)
     json (1.4.6)
-    json_pure (1.4.6)
-    paperclip (2.3.4)
-      activerecord
-      activesupport
+    mongo (1.0.7)
+      bson (>= 1.0.4)
+    mongo_ext (0.19.3)
+    mongoid (2.0.0.beta.17)
+      activemodel (~> 3.0.0)
+      bson (= 1.0.4)
+      mongo (= 1.0.7)
+      tzinfo (~> 0.3.22)
+      will_paginate (~> 3.0.pre)
     rack (1.2.1)
     rack-flash (0.1.1)
       rack
@@ -113,38 +51,35 @@ GEM
       rspec-expectations (~> 2.0.1)
     sinatra (1.0)
       rack (>= 1.0)
+    sinatra-mongoid (0.0.2)
+      mongo_ext
+      mongoid
+      sinatra
     sinatra-redirect-with-flash (0.1.2)
       rack-flash (>= 0.1.1)
       sinatra (>= 0.9.1)
-    stringex (1.1.0)
     tilt (1.1)
     tzinfo (0.3.23)
-    uuidtools (2.1.1)
     vegas (0.1.8)
       rack (>= 1.0.0)
+    will_paginate (3.0.pre2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   activesupport
+  bson_ext (= 1.0.4)
   carrierwave
-  data_mapper
-  dm-aggregates
-  dm-core
-  dm-migrations
-  dm-paperclip
-  dm-postgres-adapter
-  dm-timestamps
-  dm-validations
   fastthread
   haml
-  paperclip
+  mongoid (= 2.0.0.beta.17)
   rack-flash
   rack-test
   rake
   resque
   rspec
   sinatra (>= 1.0)
+  sinatra-mongoid
   sinatra-redirect-with-flash
   tilt
