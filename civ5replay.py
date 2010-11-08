@@ -8,6 +8,7 @@
 #   * Collin Grady:        Babylon colours, <html> header, replay files
 #   * BotYann:             French translation, replay files
 #   * player1 fanatic:     Usability suggestions
+#   * blind biker:         Usability suggestions
 # Forum names are on CivFanatics unless otherwise noted.
 #
 # Please note that this is based on reverse engineered serialiized data.
@@ -58,11 +59,11 @@ def p(*s):
     """ Helper function replacing print for utf-8 output"""
     if debug:
       for e in s:
-          if not isinstance(e, unicode):
-              e = unicode(e)
+        if not isinstance(e, unicode):
+          e = unicode(e)
           sys.stdout.write(e.encode("utf-8"))
           sys.stdout.write(" ")
-      sys.stdout.write("\n")
+        sys.stdout.write("\n")
 
 # difficulty level names
 difficulty_strings = [
@@ -343,6 +344,10 @@ span.%(id)s_disabled_option {
         <a class="%(id)s_button" onclick="%(id)s_frame(1)" onselectstart="return false">&gt;</a>
         <a class="%(id)s_button" onclick="%(id)s_frame(10)" onselectstart="return false">&gt;&gt;</a>
         <a class="%(id)s_button" onclick="%(id)s_frame(99999)" onselectstart="return false">&gt;|</a>
+        
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        <a class="%(id)s_button" onclick="%(id)s_toggle_alpha()" onselectstart="return false">&#945;</a>
        
         &nbsp;&nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;
@@ -384,6 +389,8 @@ var %(id)s_histogram = %(javascript_histogram_score)s;
 
 var %(id)s_timeout = null;
 
+var %(id)s_border_alpha = 0.2;
+
 // Set up the canvas and the other HTML areas
 function %(id)s_setup() {
     var canvas = document.getElementById('%(id)s_canvas');
@@ -391,8 +398,28 @@ function %(id)s_setup() {
         canvas = canvas.getContext("2d");
         %(id)s_c = canvas;
     }
-    %(id)s_render_turn(0);
+    if(%(id)s_background.length <= 0) {
+        %(id)s_border_alpha = 1.0;
+    }
+    %(id)s_render_turn(%(start_turn)d);
     %(id)s_advance_turn();
+}
+
+// Toggle alpha
+function %(id)s_toggle_alpha() {
+    var ba = %(id)s_border_alpha;
+    if(ba < 0.5) {
+        ba = 1.0;
+    } else if(ba < 0.9) {
+        ba = 0.2;
+    } else {
+        ba = 0.6;
+    }
+    %(id)s_border_alpha = ba;
+    %(id)s_refresh = 1;
+    if(%(id)s_timeout === null) {
+        %(id)s_stop_animation();
+    }
 }
 
 // Stop the animation
@@ -427,7 +454,7 @@ function %(id)s_restart_animation() {
 // Advance x frames
 function %(id)s_frame(x) {
     x = %(id)s_last_turn_drawn + x;
-    if(x < 0) x = 0;
+    if(x < %(start_turn)d) x = %(start_turn)d;
     if(x > %(id)s_max_turn) x = %(id)s_max_turn;
     %(id)s_refresh = 1;
     %(id)s_render_turn(x);
@@ -440,6 +467,7 @@ function %(id)s_advance_turn() {
         %(id)s_timeout = null;
     }
     turn = %(id)s_last_turn_drawn + 1;
+    if(turn == 0) turn = %(start_turn)d;
     %(id)s_render_turn(turn);
     if(turn >= %(id)s_max_turn) {
         return;
@@ -609,9 +637,9 @@ function %(id)s_render_turn(turn) {
         }
         if(!d) continue;
         if(%(id)s_background.length <= 0) {
-            %(id)s_draw_hex_tile(x, y, d[0], "", 0, 0, 0);
+            %(id)s_draw_hex_tile(x, y, d[0], "", 0, 0, 0, %(id)s_border_alpha);
         } else { 
-            %(id)s_draw_hex_tile(x, y, d[0], "", 0, 0, 0, 0.2);
+            %(id)s_draw_hex_tile(x, y, d[0], "", 0, 0, 0, %(id)s_border_alpha);
         }
         borders = [];
         for(var j=0; j<6; ++j) {
@@ -950,6 +978,12 @@ class Civ5FileReader(object):
                 return l
             l.append(s)
 
+    def read_sized_string_list(self, size):
+        """ Read a block of data with a given size, and split in null-terminated strings. """
+        block = self.r.read(size)
+        if block.endswith("\0"):
+            block = block[:-1]
+        return block.split("\0")
 
 class Civ5Map(Civ5FileReader):
     """ Encapsulates a Civ V map, and can load Civ5Map files. """
@@ -976,13 +1010,24 @@ class Civ5Map(Civ5FileReader):
 
         f.read(1)   # no idea
 
-        # eight more ints, apparently
-        self.read_ints(8)
+        self.read_int() # no idea
+        terrain_len = self.read_int()  # length of terrain XML id block in bytes
+        feat1_len = self.read_int()    # length of first feature block
+        feat2_len = self.read_int()    # length of second feature block
+        resource_len = self.read_int() # length of resource block
+        self.read_int() # no idea
+        string1_len = self.read_int()  # length of first string after id blocks
+        string2_len = self.read_int()  # length of second string after id blocks
 
         # terrain/feature/resource identifiers as in XML
-        self.features = self.read_terminated_string_list()
+        self.terrains = self.read_sized_string_list(terrain_len)
+        self.features = self.read_sized_string_list(feat1_len)
+        f.read(feat2_len)
+        self.resources = self.read_sized_string_list(resource_len)
 
-        f.read(1)  # no idea
+        # whatever those two strings are... 
+        f.read(string1_len)
+        f.read(string2_len)
 
         self.map = []
         debugout = []
@@ -1002,23 +1047,14 @@ class Civ5Map(Civ5FileReader):
         if debug:
             sys.stdout.write("\n".join(debugout)+"\n")
 
-    def nth_string(self, start, id):
-        if id < 0:
-            return None
-        for s in self.features:
-            if s.startswith(start):
-                if id == 0:
-                    return s
-                id -= 1
-
     def get_terrain(self, id):
-        return self.nth_string("TERRAIN_", id)
+        return self.terrains[id]
 
     def get_resource(self, id):
-        return self.nth_string("RESOURCE_", id)
+        return self.resources[id]
 
     def get_feature(self, id):
-        return self.nth_string("FEATURE_", id)
+        return self.features[id]
 
     def map_info(self):
         """ Provide some basic human-readable description of the map. """
@@ -1027,7 +1063,7 @@ class Civ5Map(Civ5FileReader):
 class Civ5ReplayEvent(object):
     """ Encapsulates a single event in a replay. """
 
-    def __init__(self, event_data, event_text):
+    def __init__(self, event_data, event_text, is_last=False):
         # every event appears to start with 0xffffffff
         self.data = event_data
         self.text = event_text
@@ -1036,7 +1072,10 @@ class Civ5ReplayEvent(object):
         self.record_type = self.data[0]
        
         # the following fields are only valid for type 0 records
-        if self.record_type == 0:
+        if self.record_type == 0 or is_last:
+            self.start_turn = self.record_type
+            self.record_type = 0
+
             # The starting year, BC is negative
             self.start_year = self.data[1]
 
@@ -1071,9 +1110,16 @@ class Civ5ReplayEvent(object):
         # helpers
         self.city_name = None
         self.city = 0
+        self.last_event = False
+
+    def set_last_event(self, b):
+        """ Mark this event as the last event in the replay """
+        self.last_event = b
 
     def is_last_event(self):
         """ Return True if this is the last event in the replay """
+        if self.last_event:
+            return True
         return self.record_type == 0
 
     def update_map(self, lst):
@@ -1138,11 +1184,12 @@ class Civ5Replay(Civ5FileReader):
         self.map_script = None
         self.map_size_id = None
         self.map_size = None
+        self.start_year = None
+        self.start_turn = None
         self.final_turn = None
         self.final_year = None
         self.victory_text = ""
         self.victory_type = None
-        self.final_score = 0
         self.w = 0
         self.h = 0
         self.histogram = None
@@ -1240,8 +1287,8 @@ class Civ5Replay(Civ5FileReader):
         vt = self.read_int()
         self.victory_type = victory_types.get(vt, "unknown")
 
-        # The final score
-        self.final_score = self.read_int()
+        # How many events there are
+        self.event_count = self.read_int()
 
         # All my files now have 0,1
         hd.append(self.read_int())
@@ -1266,28 +1313,33 @@ class Civ5Replay(Civ5FileReader):
         self.read_header()
         event = []
         event.append(self.read_int())
-        if event[0] == -1:
+        is_last = False
+        if (len(self.events)==self.event_count-1 and event[0] not in (1,2)) or (event[0] == 0):
+            # Special rules for the end of the replay
+            event.extend(self.read_ints(2))
+            event.extend([0,0,0])
+            is_last = True
+        elif event[0] == -1:
             # I've only seen this in one replay file (note to self: Augustus Caesar_0332 AD-1912_0)
             self.read_int()
             event = [1,0,0,-1,-1,0]
         elif event[0] not in (0,1,2):
+            print event, len(self.events), self.event_count
             # I've only seen this in one replay file (note to self: Gandhi_0500 AD-2050-_1)
             while self.read_int() != -1:
                 pass
             return Civ5ReplayEvent([1,0,0,-1,-1,0], "")
-        elif event[0] == 0:
-            # Special rules for the end of the replay
-            event.extend(self.read_ints(2))
-            event.extend([0,0,0])
         else:
             event.extend(self.read_ints(5))
         event_text = self.read_string()
-        evt = Civ5ReplayEvent(event, event_text)
+        evt = Civ5ReplayEvent(event, event_text, is_last)
         self.events.append(evt)
         if evt.is_last_event():
             self.fully_read = True
             self.final_turn = evt.turn
             self.final_year = evt.text
+            self.start_year = evt.start_year
+            self.start_turn = evt.start_turn
             self.read_histogram()
         else:
             event_end = self.read_int()
@@ -1725,7 +1777,7 @@ if __name__ == "__main__":
             p("-" * 78 + "\n")
         replay = Civ5Replay(args[0])
         p("Leader:", replay.leader_info())
-        p("Victory type: %s; final score: %d" % (replay.victory_type, replay.final_score))
+        p("Victory type: %s" % (replay.victory_type))
         p("Game options: %s; enabled victory types: %s" % (replay.get_game_options(), replay.get_enabled_victory_types()))
         if args[0].endswith(".Civ5Replay"):
             base = args[0].rsplit(".", 1)[0]
