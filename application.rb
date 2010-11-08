@@ -48,5 +48,6 @@ get '/replay/:id' do
   haml :replay
 end
 get '/' do
+  @replays = Replay.all
   haml :index
 end

@@ -1,9 +1,0 @@
-%p Simply upload a replay of a finished civilization 5 game and a HTML page will be generated for your replay :-)
-%form{:action => '/upload', :enctype => 'multipart/form-data', :method => 'POST'}
-  %p<
-    Replay description max 150 chars.
-    %input{:type => 'text',:id => 'description', :name => 'description'}
-  %p<
-    %input{:type => 'file',:id => 'file', :name => 'file'}
-  %p<
-    %input{:type => 'submit', :value => 'Upload'}
