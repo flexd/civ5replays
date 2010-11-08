@@ -1,8 +1,11 @@
-%p<
-  = @replay.description
-  %br
-  - if @replay.replay_file.nil? then
-    Replay not generated yet, reload in a bit!
-  - else
-    = @replay.replay
+- if not @replay.nil? then
+  %p<
+    = @replay.description
+    %br
+      - if @replay.replay.nil? then
+        Replay not generated yet, reload in a bit!
+      - else
+        = @replay.replay
+- else
+  %p There is no such replay, are you silly? :-(
   

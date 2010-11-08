@@ -33,8 +33,11 @@ configure do
   $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/lib")
   Dir.glob("#{File.dirname(__FILE__)}/lib/*.rb") { |lib| require File.basename(lib, '.*') }
   
-  #DataMapper.setup(:defaut, "postgres://localhost/civ5replay_#{Sinatra::Base.environment}")
-  DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{File.expand_path(File.dirname(__FILE__))}/#{Sinatra::Base.environment}.db"))
+  # If you want the logs displayed you have to do this before the call to setup
+  DataMapper::Logger.new($stdout, :debug)
+  # This is not the real password sillys :-)
+  DataMapper.setup(:default, "postgres://civ5replays_production:buO!NiEr@localhost/civ5replays_#{Sinatra::Base.environment}")
+  #DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{File.expand_path(File.dirname(__FILE__))}/#{Sinatra::Base.environment}.db"))
   use Rack::Flash
   enable :sessions
   
