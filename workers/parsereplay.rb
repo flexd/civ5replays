@@ -29,14 +29,17 @@ class ParseReplay
         # python script has generated a html in tf, lets save it
         begin
           @replay.replay = File.open(temppath)
+          @replay.generated = true
           puts "Error saving generated replay!" unless @replay.save!
         rescue CarrierWave::IntegrityError
           puts "wrong file silly"
           p @replay.errors.full_messages
         end
         puts "@replay.replay is: #{@replay.replay.inspect} - tf is: #{temppath.inspect}"
-      else 
-        raise "Catastrophic failure parsing :-D"
+      else
+        @replay.generated = false
+        @replay.save!
+        raise "Catastrophic failure parsing :-D"     
       end
     end
   end
