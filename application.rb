@@ -39,7 +39,14 @@ get '/replay/:id' do
   unless @replay then halt 404, "No such replay" end
   haml :replay
 end
+get '/replays' do
+  @replays = Replay.all.paginate
+  haml :replays
+end
+get '/replays/:page' do
+  @replays = Replay.all.paginate(:page => params[:page])
+  haml :replays
+end
 get '/' do
-  @replays = Replay.all
   haml :index
 end

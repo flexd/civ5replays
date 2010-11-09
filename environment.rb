@@ -1,30 +1,25 @@
 require 'rubygems'
 require "bundler/setup"
-#require 'dm-core'
-#require 'dm-timestamps'
-#require 'dm-validations'
-#require 'dm-aggregates'
-#require 'dm-migrations'
-#require 'dm-paperclip'
 require 'haml'
 require 'ostruct'
 require 'rack-flash'
 require 'sinatra' unless defined?(Sinatra)
-require 'sinatra/mongoid'
+require 'sinatra-mongoid-config'
 require 'sinatra/redirect_with_flash'
 require 'resque'
 require 'carrierwave'
 #require 'carrierwave/orm/datamapper'
 
 APP_ROOT = File.expand_path(File.dirname(__FILE__))
-set :mongo_db, "civ5replays_#{Sinatra::Base.environment}"
+
 configure do
   SiteConfig = OpenStruct.new(
                  :title => 'Civilization 5 replay generator',
                  :author => 'flexd',
-                 :url_base => 'http://localhost:4567/'
+                 :url_base => 'http://localhost:4567/',
+                 :db_name => 'civ5replays'
                )
-
+  set :mongo_db, "#{SiteConfig.db_name}_#{Sinatra::Base.environment}"
   # load workers
   $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/workers")
   Dir.glob("#{File.dirname(__FILE__)}/workers/*.rb") { |lib| require File.basename(lib, '.*') }

@@ -6,3 +6,4 @@ tmp/*
 public/uploads/*
 public/replays/*
 .DS_Store
+sinatra-mongoid/*

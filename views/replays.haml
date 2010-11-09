@@ -1,0 +1,10 @@
+%br
+- @replays.each do |replay|
+  %a{:href => "/replay/#{replay.id}"}
+    = replay.description
+  %br
+%br
+%p>
+  There are 
+  = @replays.count
+  replay(s) stored

@@ -14,7 +14,7 @@ class ParseReplay
    # puts "We got this far?"
     @replay = Replay.find(id)
    # puts "but not this far?"
-    tempfile = @replay.original.current_path.scan(/[\/]#{@replay.name}\/(.+)[.]/).first.first
+    tempfile = @replay.original.current_path.scan(/[\/]#{@replay.id}\/(.+)[.]/).first.first
     temppath = "#{APP_ROOT}/public/uploads/tmp/" + tempfile + ".html"
    # puts "and this far!"
   #  puts "temppath: #{temppath.inspect}"

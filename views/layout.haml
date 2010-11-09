@@ -12,6 +12,13 @@
               = flash[:error]
           %h1
             %a{:href => '/'}= SiteConfig.title
-      #content= yield
+      #content
+        %a{:href => '/'} Home
+        |
+        %a{:href => '/replays'} Replays
+        |
+        %a{:href => '/stats'} Stats
+        %br
+        = yield
       #footer
         %p#legal= "&mdash; &copy; #{Time.now.strftime('%Y')} #{SiteConfig.author} &mdash;"

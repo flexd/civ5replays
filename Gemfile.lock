@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/flexd/sinatra-mongoid-config.git
+  revision: 72f27869b40566e7b5b838f7542585f9187af26f
+  specs:
+    sinatra-mongoid-config (0.1.1)
+      mongoid (>= 2.0.0.beta.17)
+      sinatra (>= 1.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -18,7 +26,6 @@ GEM
     json (1.4.6)
     mongo (1.0.7)
       bson (>= 1.0.4)
-    mongo_ext (0.19.3)
     mongoid (2.0.0.beta.17)
       activemodel (~> 3.0.0)
       bson (= 1.0.4)
@@ -51,10 +58,6 @@ GEM
       rspec-expectations (~> 2.0.1)
     sinatra (1.0)
       rack (>= 1.0)
-    sinatra-mongoid (0.0.2)
-      mongo_ext
-      mongoid
-      sinatra
     sinatra-redirect-with-flash (0.1.2)
       rack-flash (>= 0.1.1)
       sinatra (>= 0.9.1)
@@ -80,6 +83,6 @@ DEPENDENCIES
   resque
   rspec
   sinatra (>= 1.0)
-  sinatra-mongoid
+  sinatra-mongoid-config!
   sinatra-redirect-with-flash
   tilt
