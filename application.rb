@@ -24,6 +24,9 @@ post '/upload' do
   @replay = Replay.new
   begin
     @replay.original = params[:file]
+    if params[:mapfile] then
+      @replay.map = params[:mapfile]
+    end
   rescue CarrierWave::IntegrityError
     puts "wrong file silly"
   end

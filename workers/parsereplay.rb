@@ -4,8 +4,12 @@ def unzip(filename, destination)
    
    success && $?.exitstatus == 0
 end
-def parse(filename, destination)
-  success = system("python civ5replay.py -H #{destination} #{APP_ROOT}/public/#{filename}")
+def parse(filename, destination, map)
+  if not map.blank? then
+    success = system("python civ5replay.py -H #{destination} #{APP_ROOT}/public/#{filename} -m #{APP_ROOT}/public/#{map}")
+  else
+    success = system("python civ5replay.py -H #{destination} #{APP_ROOT}/public/#{filename}")
+  end
   success && $?.exitstatus == 0
 end
 class ParseReplay
@@ -21,7 +25,7 @@ class ParseReplay
    # tempfile = temppath + tempfile.first
     if @replay.original.current_path =~ /[.]civ5replay/ then
       # It's a .civ5replay file
-      if parse(@replay.original, temppath) then
+      if parse(@replay.original, temppath, @replay.map) then
         # python script has generated a html in tf, lets save it
         begin
           @replay.replay = File.open(temppath)
