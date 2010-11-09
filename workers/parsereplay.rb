@@ -30,6 +30,7 @@ class ParseReplay
         begin
           @replay.replay = File.open(temppath)
           @replay.generated = true
+          cache_expire(@replay.id)
           puts "Error saving generated replay!" unless @replay.save!
         rescue CarrierWave::IntegrityError
           puts "wrong file silly"
