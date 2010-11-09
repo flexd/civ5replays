@@ -6,6 +6,7 @@ require 'rack-flash'
 require 'sinatra' unless defined?(Sinatra)
 require 'sinatra-mongoid-config'
 require 'sinatra/redirect_with_flash'
+require 'sinatra/cache'
 require 'resque'
 require 'carrierwave'
 #require 'carrierwave/orm/datamapper'

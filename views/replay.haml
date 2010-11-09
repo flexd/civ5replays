@@ -4,4 +4,5 @@
   - if not @replay.replay_filename then
     Replay not generated yet, reload in a bit!
   - else
-    = File.new(@replay.replay.path).read()
+    - cache_fragment(@replay.id) do
+      = File.new(@replay.replay.path).read()

@@ -3,6 +3,7 @@
   %head
     %title= @title || SiteConfig.title
     %link{:href => '/main.css', :rel => 'stylesheet', :type => 'text/css'}
+    = cache_timestamp
   %body
     #container
       #header

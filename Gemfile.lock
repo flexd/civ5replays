@@ -58,6 +58,11 @@ GEM
       rspec-expectations (~> 2.0.1)
     sinatra (1.0)
       rack (>= 1.0)
+    sinatra-cache (0.3.4)
+      sinatra (>= 1.0)
+      sinatra-outputbuffer (>= 0.1.0)
+    sinatra-outputbuffer (0.1.0)
+      sinatra (>= 1.0.a)
     sinatra-redirect-with-flash (0.1.2)
       rack-flash (>= 0.1.1)
       sinatra (>= 0.9.1)
@@ -83,6 +88,7 @@ DEPENDENCIES
   resque
   rspec
   sinatra (>= 1.0)
+  sinatra-cache
   sinatra-mongoid-config!
   sinatra-redirect-with-flash
   tilt
