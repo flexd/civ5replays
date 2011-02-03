@@ -3,6 +3,7 @@
   %head
     %title= @title || SiteConfig.title
     %link{:href => '/main.css', :rel => 'stylesheet', :type => 'text/css'}
+    %link{:href => '/main.css', :rel => 'stylesheet', :type => 'text/css'}
     = cache_timestamp
     %meta{:"http-equiv" => "Content-Type", :content => "text/html; charset=utf-8" }
     %meta{:name => "keywords", :content => "civilization5, civ5, civ5replays, civ5replayparser, replayparser" }
@@ -25,4 +26,4 @@
         %br
         = yield
       #footer
-        %p#legal= "&mdash; &copy; #{Time.now.strftime('%Y')} #{SiteConfig.author} &mdash;"
+        %p#legal= "&mdash; It's all free, go nuts! #{Time.now.strftime('%Y')} #{SiteConfig.author} &mdash;"
