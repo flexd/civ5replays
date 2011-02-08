@@ -1,5 +1,7 @@
 %br
 - @replays.each do |replay|
+  = replay.number
+  -
   %a{:href => "/replay/#{replay.id}"}
     = replay.description
   %br

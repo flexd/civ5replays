@@ -49,12 +49,12 @@ get '/replay/:id' do
 end
 # Pagination currently setup but no next/previous actions in the view.
 get '/replays' do
-  @replays = Replay.all.asc.paginate :page => 1, :per_page => 25
+  @replays = Replay.order_by(:_id.desc).paginate :page => 1, :per_page => 25
   haml :replays
 end
 get '/replays/:page' do
   puts "page is: #{params[:page]}"
-  @replays = Replay.all.asc.paginate :page => params[:page], :per_page => 25
+  @replays = Replay.order_by(:_id.desc).paginate :page => params[:page], :per_page => 25
   haml :replays
 end
 get '/' do
