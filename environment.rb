@@ -17,7 +17,7 @@ configure do
   SiteConfig = OpenStruct.new(
                  :title => 'Civilization 5 replay generator',
                  :author => 'flexd',
-                 :url_base => 'http://localhost:4567/',
+                 :url_base => 'http://civ5.flexd.net/',
                  :db_name => 'civ5replays'
                )
   set :mongo_db, "#{SiteConfig.db_name}_production" #{Sinatra::Base.environment}
