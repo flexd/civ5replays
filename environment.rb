@@ -20,7 +20,7 @@ configure do
                  :url_base => 'http://localhost:4567/',
                  :db_name => 'civ5replays'
                )
-  set :mongo_db, "#{SiteConfig.db_name}_#{Sinatra::Base.environment}"
+  set :mongo_db, "#{SiteConfig.db_name}_production" #{Sinatra::Base.environment}
   # load workers
   $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/workers")
   Dir.glob("#{File.dirname(__FILE__)}/workers/*.rb") { |lib| require File.basename(lib, '.*') }

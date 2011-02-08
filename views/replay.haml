@@ -4,8 +4,31 @@
   - if @replay.generated then
     - cache_fragment(@replay.id) do
       = File.new(@replay.replay.path).read()
+    %div{:id=>"disqus_thread"}
+      :javascript
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'civilization5replaygenerator'; // required: replace example with your forum shortname
+        // The following are highly recommended additional parameters. Remove the slashes in front to use.
+        // var disqus_identifier = 'unique_dynamic_id_1234';
+        var disqus_url = 'http://example.com/permalink-to-page.html';
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+
+      %noscript
+        Please enable JavaScript to view the %a{:href=>"http://disqus.com/?ref_noscript"} comments powered by Disqus.
+        %a{:href=>"http://disqus.com", :class=>"dsq-brlink"} 
+          blog comments powered by 
+          %span{:class=>"logo-disqus"} Disqus
   - else
     Replay not generated yet or there was some kind of error. (If this is not here after a few minutes tops its safe to say it was probably an error.)
     %a{:href=>'http://forums.civfanatics.com/showthread.php?t=402101'} If something breaks go here.
+    
+    
+   
 
     

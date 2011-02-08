@@ -14,6 +14,7 @@ Sinatra::Base.set :logging, false
 require File.join(File.dirname(__FILE__), '../application')
 #require_relative 'application'
 
+# TODO: Replace this with mongoid.
 # establish in-memory database for testing
 DataMapper.setup(:default, "sqlite3::memory:")
 

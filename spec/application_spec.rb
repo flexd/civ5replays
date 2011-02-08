@@ -1,5 +1,5 @@
 require "#{File.dirname(__FILE__)}/spec_helper"
-
+# TODO: Actually test things!
 describe 'main application' do
   include Rack::Test::Methods
 

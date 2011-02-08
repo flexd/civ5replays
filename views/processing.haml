@@ -1,7 +1,0 @@
-%head
-  :javascript
-    setTimeout("window.location='/generated/#{@resource.replay_file}'",20*1000)
-%h2 Processing..
-%p Your file has been uploaded and the server is processing it. This may take some time depending on server load.
-%p You will be redirected to your replay file in 20 seconds, if it is not there yet just wait a little while longer and refresh the page! :-)
-%a{:href => "/generated/#{@resource.replay_file}"}

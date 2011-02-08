@@ -4,7 +4,13 @@
     = replay.description
   %br
 %br
-%p>
-  There are 
-  = @replays.count
-  replay(s) stored
+Page
+= @replays.current_page
+of
+= @replays.total_pages
+%br
+- if @replays.previous_page
+  %a{:href => "/replays/#{@replays.previous_page}" } Previous page
+- if @replays.next_page
+  %a{:href => "/replays/#{@replays.next_page}" } Next page
+%br

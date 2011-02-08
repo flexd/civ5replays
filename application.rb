@@ -22,9 +22,8 @@ helpers do
   # add your helpers here
 end
 
-BOWTIE_AUTH = {:user => 'admin', :pass => '12345' }
-
 post '/upload' do
+  # Save files
   @replay = Replay.new
   begin
     @replay.original = params[:file]
@@ -32,12 +31,14 @@ post '/upload' do
       @replay.map = params[:mapfile]
     end
   rescue CarrierWave::IntegrityError
-    puts "wrong file silly"
+    puts "That is not a savegame or map file silly!"
   end
   @replay.description = params[:description]
-  p @replay.errors.full_messages
-  redirect '/', :error => "Something went wrong with saving the record: #{@replay.errors.inspect}" unless @replay.save
+  redirect '/', :error => "Something went wrong with saving the record: #{@replay.errors.inspect}" unless @replay.save!
+  # Hand replay off to resque.
   @replay.async_parse
+  # Redirect the user to where the replay will appear.
+  # TODO: Make a nice ajax loading thingy instead.
   redirect "/replay/#{@replay.id}"
 
 end
@@ -46,12 +47,14 @@ get '/replay/:id' do
   unless @replay then halt 404, "No such replay" end
   haml :replay
 end
+# Pagination currently setup but no next/previous actions in the view.
 get '/replays' do
-  @replays = Replay.all.paginate
+  @replays = Replay.all.asc.paginate :page => 1, :per_page => 25
   haml :replays
 end
 get '/replays/:page' do
-  @replays = Replay.all.paginate(:page => params[:page])
+  puts "page is: #{params[:page]}"
+  @replays = Replay.all.asc.paginate :page => params[:page], :per_page => 25
   haml :replays
 end
 get '/' do
