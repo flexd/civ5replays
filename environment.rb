@@ -9,6 +9,7 @@ require 'sinatra/redirect_with_flash'
 require 'sinatra/cache'
 require 'resque'
 require 'carrierwave'
+require 'pp'
 #require 'carrierwave/orm/datamapper'
 
 APP_ROOT = File.expand_path(File.dirname(__FILE__))

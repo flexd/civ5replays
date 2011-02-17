@@ -1,6 +1,7 @@
 require 'rubygems'
 require "bundler/setup"
 require 'sinatra'
+require 'json'
 require_relative 'environment'
 
 
@@ -34,13 +35,22 @@ post '/upload' do
     puts "That is not a savegame or map file silly!"
   end
   @replay.description = params[:description]
-  redirect '/', :error => "Something went wrong with saving the record: #{@replay.errors.inspect}" unless @replay.save!
+  redirect '/', :error => "Something went wrong with saving the record: #{@replay.errors.inspect}" unless @replay.save
   # Hand replay off to resque.
   @replay.async_parse
   # Redirect the user to where the replay will appear.
   # TODO: Make a nice ajax loading thingy instead.
   redirect "/replay/#{@replay.id}"
 
+end
+get '/stats' do
+  @replay_count = Replay.all.count
+  haml :stats
+end
+get '/g/:id' do
+  @replay = Replay.find(params[:id])
+  content_type :json
+  {:generated => @replay.generated}.to_json
 end
 get '/replay/:id' do
   @replay = Replay.find(params[:id])
@@ -49,12 +59,12 @@ get '/replay/:id' do
 end
 # Pagination currently setup but no next/previous actions in the view.
 get '/replays' do
-  @replays = Replay.order_by(:_id.desc).paginate :page => 1, :per_page => 25
+  @replays = Replay.where(:generated => true).order_by(:_id.desc).paginate :page => 1, :per_page => 25
   haml :replays
 end
 get '/replays/:page' do
   puts "page is: #{params[:page]}"
-  @replays = Replay.order_by(:_id.desc).paginate :page => params[:page], :per_page => 25
+  @replays = Replay.where(:generated => true).order_by(:_id.desc).paginate :page => params[:page], :per_page => 25
   haml :replays
 end
 get '/' do
