@@ -2,8 +2,7 @@
   = @replay.description
   %br
   - if @replay.generated then
-    - cache_fragment(@replay.id) do
-      = File.new(@replay.replay.path).read()
+    = File.new(@replay.replay.path).read()
     %div{:id=>"disqus_thread"}
       :javascript
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */

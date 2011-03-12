@@ -45,6 +45,8 @@ post '/upload' do
 end
 get '/stats' do
   @replay_count = Replay.all.count
+  @parse_success = Replay.all(:conditions => {:generated => true}).count
+  @parse_failure = Replay.all(:conditions => {:generated => false}).count
   haml :stats
 end
 get '/g/:id' do
@@ -67,7 +69,6 @@ get '/failed' do
   haml :replays # reusable views, woo!
 end
 get '/replays/:page' do
-  puts "page is: #{params[:page]}"
   @replays = Replay.where(:generated => true).order_by(:_id.desc).paginate :page => params[:page], :per_page => 25
   haml :replays
 end
