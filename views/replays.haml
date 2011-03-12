@@ -2,6 +2,7 @@
 - @replays.each do |replay|
   %a{:href => "/replay/#{replay.id}"}
     = replay.description
+  = replay.created_at ? replay.created_at.strftime("%d/%w/%Y") : ""
   %br
 %br
 Page

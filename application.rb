@@ -62,6 +62,10 @@ get '/replays' do
   @replays = Replay.where(:generated => true).order_by(:_id.desc).paginate :page => 1, :per_page => 25
   haml :replays
 end
+get '/failed' do
+  @replays = Replay.where(:generated => false).order_by(:_id.desc).paginate :page => 1, :per_page => 25
+  haml :replays # reusable views, woo!
+end
 get '/replays/:page' do
   puts "page is: #{params[:page]}"
   @replays = Replay.where(:generated => true).order_by(:_id.desc).paginate :page => params[:page], :per_page => 25
