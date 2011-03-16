@@ -1709,7 +1709,7 @@ class Civ5Replay(Civ5FileReader):
         self.javascript_background = j
         
         # assemble the HTML
-        ret = html_header % self.__dict__
+        # ret = html_header % self.__dict__
         ret += html_javascript % self.__dict__
         ret += html_skeleton % self.__dict__
         return ret
