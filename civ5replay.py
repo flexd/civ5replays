@@ -9,6 +9,7 @@
 #   * BotYann:             French translation, replay files
 #   * player1 fanatic:     Usability suggestions
 #   * blind biker:         Usability suggestions
+#   * MouseyPounds:        Partial DLC civs, updates for patch 1.0.1.217
 # Forum names are on CivFanatics unless otherwise noted.
 #
 # Please note that this is based on reverse engineered serialiized data.
@@ -57,13 +58,12 @@ class L(object):
 
 def p(*s):
     """ Helper function replacing print for utf-8 output"""
-    if debug:
-      for e in s:
+    for e in s:
         if not isinstance(e, unicode):
-          e = unicode(e)
-          sys.stdout.write(e.encode("utf-8"))
-          sys.stdout.write(" ")
-        sys.stdout.write("\n")
+            e = unicode(e)
+        sys.stdout.write(e.encode("utf-8"))
+        sys.stdout.write(" ")
+    sys.stdout.write("\n")
 
 # difficulty level names
 difficulty_strings = [
@@ -112,9 +112,11 @@ game_options = {
     9:      L("Complete Kills",        fr="Destruction totale"),
    10:      L("No Ancient Ruins",      fr="Pas de ruines antiques"),
    11:      L("Random Personalities",  fr="Personnalités aléatoires"),
-   12:      L("Enable Turn Timer",     fr="Active le chrono. tour"),
-   13:      L("Quick Combat",          fr="Combat rapide"),
-   14:      L("Disable Start Bias",    fr="Désactiver les préférences de départ"),
+   12:      L("Allow Policy Saving",   ),
+   13:      L("Allow Promotion Saving",),
+   14:      L("Enable Turn Timer",     fr="Active le chrono. tour"),
+   15:      L("Quick Combat",          fr="Combat rapide"),
+   16:      L("Disable Start Bias",    fr="Désactiver les préférences de départ"),
 }
 option_noraze = 0;
 option_occ = 5;
@@ -148,6 +150,10 @@ civs = [
     [ L("Songhai Empire",   fr="Empire songhaï"),   L("Gao",          fr="Gao"),        "#5a0009", "#d59113" ],
 # DLC civs 
     [ L("Babylonian Empire",fr="Empire babylonien"),L("Babylon",      fr="Babylone"),   "#c9f8ff", "#2b5162" ],
+    [ L("Mongol Empire"),                           L("Karakorum"),                     "#ff7800", "#510009" ],
+    [ L("Spanish Empire"),                          L("Madrid"),                        "#ffffff", "#222222" ],
+    [ L("Inca Empire"),                             L("Cusco"),                         "#ffffff", "#222222" ],
+    [ L("Polynesian Empire"),                       L("Honolulu"),                      "#ffffff", "#222222" ],
 ]
 
 # colours for map features
@@ -1029,6 +1035,10 @@ class Civ5Map(Civ5FileReader):
         f.read(string1_len)
         f.read(string2_len)
 
+        # new string
+        string3_len = self.read_int()
+        f.read(string3_len)
+
         self.map = []
         debugout = []
         for y in range(self.h):
@@ -1709,7 +1719,7 @@ class Civ5Replay(Civ5FileReader):
         self.javascript_background = j
         
         # assemble the HTML
-        # ret = html_header % self.__dict__
+        ret = html_header % self.__dict__
         ret += html_javascript % self.__dict__
         ret += html_skeleton % self.__dict__
         return ret
