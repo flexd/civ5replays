@@ -8,9 +8,6 @@ require_relative 'environment'
 configure do
   set :views, "#{File.dirname(__FILE__)}/views"
   set :root, File.dirname(__FILE__)
-  set :cache_enabled, false
-  set :cache_output_dir, Proc.new { File.join(root, 'tmp', 'cache') }
-  set :cache_logging_level, :debug
 end
 
 error do
