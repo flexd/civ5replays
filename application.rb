@@ -41,6 +41,7 @@ post '/upload' do
 
 end
 get '/stats' do
+  cache_control :public, :must_revalidate, :max_age => 360
   @replay_count = Replay.all.count
   @parse_success = Replay.all(:conditions => {:generated => true}).count
   @parse_failure = Replay.all(:conditions => {:generated => false}).count
@@ -52,23 +53,28 @@ get '/g/:id' do
   {:generated => @replay.generated}.to_json
 end
 get '/replay/:id' do
+  cache_control :public, :must_revalidate, :max_age => 3600
   @replay = Replay.find(params[:id])
   unless @replay then halt 404, "No such replay" end
   haml :replay
 end
 # Pagination currently setup but no next/previous actions in the view.
 get '/replays' do
+  cache_control :public, :must_revalidate, :max_age => 360
   @replays = Replay.where(:generated => true).order_by(:_id.desc).paginate :page => 1, :per_page => 25
   haml :replays
 end
 get '/failed' do
+  cache_control :public, :must_revalidate, :max_age => 360
   @replays = Replay.where(:generated => false).order_by(:_id.desc).paginate :page => 1, :per_page => 25
   haml :replays # reusable views, woo!
 end
 get '/replays/:page' do
+  cache_control :public, :must_revalidate, :max_age => 360
   @replays = Replay.where(:generated => true).order_by(:_id.desc).paginate :page => params[:page], :per_page => 25
   haml :replays
 end
 get '/' do
+  cache_control :public, :must_revalidate, :max_age => 360
   haml :index
 end
