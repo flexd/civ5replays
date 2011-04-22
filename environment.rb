@@ -6,7 +6,6 @@ require 'rack-flash'
 require 'sinatra' unless defined?(Sinatra)
 require 'sinatra-mongoid-config'
 require 'sinatra/redirect_with_flash'
-require 'sinatra/cache'
 require 'resque'
 require 'carrierwave'
 require 'pp'
@@ -38,6 +37,5 @@ configure do
   #DataMapper.setup(:default, "postgres://civ5replays_production:buO!NiEr@10.0.0.5/civ5replays_#{Sinatra::Base.environment}")
   #DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{File.expand_path(File.dirname(__FILE__))}/#{Sinatra::Base.environment}.db"))
   use Rack::Flash
-  enable :sessions
-  
+  enable :sessions  
 end
