@@ -21,6 +21,7 @@ configure do
                  :url_base => 'http://civ5.flexd.net/',
                  :db_name => 'civ5replays'
                )
+  set :mongo_host, "192.168.30.23"
   set :mongo_db, "#{SiteConfig.db_name}_production" #{Sinatra::Base.environment}
   # load workers
   $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/workers")
