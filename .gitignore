@@ -1,5 +1,6 @@
 log/*
 tmp/*
+*.swp
 .application.rb.swp
 .bundle/*
 *.db
@@ -7,3 +8,4 @@ public/uploads/*
 public/replays/*
 .DS_Store
 sinatra-mongoid/*
+public*

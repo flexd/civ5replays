@@ -1,0 +1,9 @@
+production:
+  hosts: [[192.168.30.23, 27017], [192.168.30.25, 27017], [192.168.30.52, 27017]]
+  #host: 192.168.30.23
+  database: civ5replays_production
+development:
+  hosts: [[192.168.30.23, 27017], [192.168.30.25, 27017], [192.168.30.52, 27017]]
+  #host: 192.168.30.23
+  database: civ5replays_development
+

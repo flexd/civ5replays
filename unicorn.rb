@@ -1,6 +1,6 @@
 # set path to app that will be used to configure unicorn, 
 # note the trailing slash in this example
-@dir = "/home/kristoffer/civ5replays/"
+@dir = "/home/civ5replays/civ5replays/"
 
 worker_processes 2
 working_directory @dir

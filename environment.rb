@@ -4,7 +4,7 @@ require 'haml'
 require 'ostruct'
 require 'rack-flash'
 require 'sinatra' unless defined?(Sinatra)
-require 'sinatra-mongoid-config'
+require 'mongoid'
 require 'sinatra/redirect_with_flash'
 require 'resque'
 require 'carrierwave'
@@ -20,8 +20,11 @@ configure do
                  :url_base => 'http://civ5.flexd.net/',
                  :db_name => 'civ5replays'
                )
-  set :mongo_host, "192.168.30.23"
-  set :mongo_db, "#{SiteConfig.db_name}_production" #{Sinatra::Base.environment}
+  #set :mongo_host, "192.168.30.23"
+  #set :mongo_db, "#{SiteConfig.db_name}_production" #{Sinatra::Base.environment}
+  # load the database settings
+  Mongoid.load!("config/mongoid.yml") 
+ 
   # load workers
   $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/workers")
   Dir.glob("#{File.dirname(__FILE__)}/workers/*.rb") { |lib| require File.basename(lib, '.*') }
