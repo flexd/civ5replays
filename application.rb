@@ -53,9 +53,14 @@ get '/g/:id' do
   {:generated => @replay.generated}.to_json
 end
 get '/replay/:id' do
-  cache_control :public, :must_revalidate, :max_age => 3600
   @replay = Replay.find(params[:id])
   unless @replay then halt 404, "No such replay" end
+  if @replay.generated then
+    cache_control :public, :must_revalidate, :max_age => 3600
+  else
+    # This is to prevent caching of a error message when it hasn't been processed yet :-)
+    cache_control :public, :must_revalidate, :max_age => 0
+   end
   haml :replay
 end
 # Pagination currently setup but no next/previous actions in the view.
@@ -75,6 +80,11 @@ get '/replays/:page' do
   haml :replays
 end
 get '/' do
-  cache_control :public, :must_revalidate, :max_age => 360
+  cache_control :public, :must_revalidate, :max_age => 15.minutes
   haml :index
+end
+# Health check for varnish, makes us happy!
+get '/health' do
+  cache_control :public, :must_revalidate, :max_age => 3600
+  halt 200, 'OK'
 end

@@ -1,5 +1,5 @@
 sinatra_env   = ENV['RACK_ENV']  || "production"
-sinatra_root  = "/home/kristoffer/civ5replays"
+sinatra_root  = "/home/civ5replays/civ5replays"
 num_workers = sinatra_env == 'production' ? 5 : 2
 
 num_workers.times do |num|
@@ -8,10 +8,10 @@ num_workers.times do |num|
     w.group    = 'resque'
     w.interval = 30.seconds
     w.env      = {"QUEUE"=>"*", "RACK_ENV"=>sinatra_env}
-    w.start    = "/usr/bin/rake -f #{rails_root}/Rakefile resque:work"
+    w.start    = "cd /home/civ5replays/civ5replays/ && rvm exec rake resque:work"
 
-    w.uid = 'civ5replay'
-    w.gid = 'civ5replay'
+    w.uid = 'civ5replays'
+    w.gid = 'civ5replays'
 
     # retart if memory gets too high
     w.transition(:up, :restart) do |on|
