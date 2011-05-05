@@ -19,7 +19,12 @@ end
 helpers do
   # add your helpers here
 end
-
+get '/news' do
+  haml :news
+end
+get '/contact' do
+  haml :contact
+end
 post '/upload' do
   # Save files
   @replay = Replay.new
@@ -38,7 +43,6 @@ post '/upload' do
   # Redirect the user to where the replay will appear.
   # TODO: Make a nice ajax loading thingy instead.
   redirect "/replay/#{@replay.id}"
-
 end
 get '/stats' do
   cache_control :public, :must_revalidate, :max_age => 360

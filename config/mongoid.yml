@@ -3,7 +3,7 @@ production:
   #host: 192.168.30.23
   database: civ5replays_production
 development:
-  hosts: [[192.168.30.210, 27017], [192.168.30.212, 27017]]
-  #host: 192.168.30.23
+  #hosts: [[localhost, 27017]]
+  host: localhost
   database: civ5replays_development
 

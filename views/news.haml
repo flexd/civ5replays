@@ -1,0 +1,28 @@
+%p
+  We are now running on three fancy virtual machines, the website is heavily cached and I dare you to slow it down with normal traffic :p
+  
+%p
+  With some help from MouseyPounds from the Civilization Fanatics forums there will soon be a updated version of the parser that will handle
+  a lot more replays (and languages) without problems.
+  Last test run did 950 replays over night and only about 15 of them failed. :-)
+
+%div{:id=>"disqus_thread"}
+  :javascript
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'civilization5replaygenerator'; // required: replace example with your forum shortname
+    // The following are highly recommended additional parameters. Remove the slashes in front to use.
+    var disqus_identifier = '5820c87g2hjf972yhdjf878guh2j9syhcjk928';
+    var disqus_url = '#{SiteConfig.url_base}';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+
+  %noscript
+    Please enable JavaScript to view the %a{:href=>"http://disqus.com/?ref_noscript"} comments powered by Disqus.
+    %a{:href=>"http://disqus.com", :class=>"dsq-brlink"} 
+      blog comments powered by 
+      %span{:class=>"logo-disqus"} Disqus
