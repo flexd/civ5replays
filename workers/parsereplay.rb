@@ -1,8 +1,8 @@
 def parse(filename, destination, map)
   if not map.blank? then
-    success = system("python lib/parser/civ5replay.py -H #{destination} #{APP_ROOT}/public/#{filename} -m #{APP_ROOT}/public/#{map}")
+    success = system("python #{APP_ROOT}/lib/parser/civ5replay.py -H #{destination} #{APP_ROOT}/public/#{filename} -m #{APP_ROOT}/public/#{map}")
   else
-    success = system("python lib/parser/civ5replay.py -H #{destination} #{APP_ROOT}/public/#{filename}")
+    success = system("python #{APP_ROOT}/lib/parser/civ5replay.py -H #{destination} #{APP_ROOT}/public/#{filename}")
   end
   success && $?.exitstatus == 0
 end
