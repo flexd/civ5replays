@@ -1,0 +1,3 @@
+[submodule "lib/parser"]
+	path = lib/parser
+	url = https://github.com/flexd/replay_parser
