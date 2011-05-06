@@ -12,8 +12,12 @@ require 'pp'
 #require 'carrierwave/orm/datamapper'
 
 APP_ROOT = File.expand_path(File.dirname(__FILE__))
+#TODO: Temp fix for static caching with varnish, until rack #157 is fixed.
+require 'sinatra/cookie_thief'
 
 configure do
+  
+  #use Sinatra::CookieThief
   SiteConfig = OpenStruct.new(
                  :title => 'Civilization 5 replay generator',
                  :author => 'flexd',
@@ -39,7 +43,8 @@ configure do
   # This is not the real password sillys :-)
   #DataMapper.setup(:default, "postgres://civ5replays_production:buO!NiEr@10.0.0.5/civ5replays_#{Sinatra::Base.environment}")
   #DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{File.expand_path(File.dirname(__FILE__))}/#{Sinatra::Base.environment}.db"))
-  use Rack::Session::Pool, :expire_after => 2592000
+  use Rack::Session::Cookie, :key => 'app.session', :path => '/', :expire_after => 2592000, :secret => 'JZ6ciUo4GHkYu1nc0Z90uW9anPlqt7lC8bHCkaIzlldlpuuoVcFSFNjhCbJM8S0'
+  #use Rack::Session::Pool, :expire_after => 2592000
   use Rack::Flash
 #  enable :sessions  
 end

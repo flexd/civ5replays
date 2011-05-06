@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/kyledrake/sinatra-cookie_thief.git
+  revision: 97e5b01a6f399aeecde66f0c230e8937f155bfc3
+  specs:
+    sinatra-cookie_thief (0.1.0)
+      sinatra (>= 1.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -70,4 +77,5 @@ DEPENDENCIES
   resque
   rspec
   sinatra (>= 1.0)
+  sinatra-cookie_thief!
   sinatra-redirect-with-flash

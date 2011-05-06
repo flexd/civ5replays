@@ -1,4 +1,5 @@
 source :rubygems
+gem 'sinatra-cookie_thief', :git => "https://github.com/kyledrake/sinatra-cookie_thief.git"
 gem "sinatra", ">=1.0"
 gem "bson_ext", "~> 1.3"
 gem "mongoid", "~> 2.0"
