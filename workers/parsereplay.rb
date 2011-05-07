@@ -1,11 +1,11 @@
 def parse(filename, destination, map)
   if not map.blank? then
     retr_string, s = Open3.capture2e("python lib/parser/civ5replay.py -H #{destination} #{APP_ROOT}/public/#{filename} -m #{APP_ROOT}/public/#{map}")
-    puts "retr_string: #{retr_string}, s: #{s.inspect}"
+    #puts "retr_string: #{retr_string}, s: #{s.inspect}"
     #success = system("python lib/parser/civ5replay.py -H #{destination} #{APP_ROOT}/public/#{filename} -m #{APP_ROOT}/public/#{map}")
   else
     retr_string, s = Open3.capture2e("python lib/parser/civ5replay.py -H #{destination} #{APP_ROOT}/public/#{filename}")
-    puts "retr_string: #{retr_string}, s: #{s.inspect}"
+    #puts "retr_string: #{retr_string}, s: #{s.inspect}"
     #success = system("python lib/parser/civ5replay.py -H #{destination} #{APP_ROOT}/public/#{filename}")
   end
   if s.success? then
