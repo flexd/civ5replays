@@ -1,0 +1,12 @@
+#! /usr/bin/env ruby
+require 'rubygems'
+require 'bundler'
+require_relative '../environment'
+
+# Lets' find all the failed/not generated replays older than a day?
+
+failed_replays = Replay.where(:generated => false)
+
+failed_replays.each do |replay|
+  replay.async_parse
+end
