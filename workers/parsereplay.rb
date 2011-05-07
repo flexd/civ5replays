@@ -1,10 +1,18 @@
 def parse(filename, destination, map)
   if not map.blank? then
-    success = system("python #{APP_ROOT}/lib/parser/civ5replay.py -H #{destination} #{APP_ROOT}/public/#{filename} -m #{APP_ROOT}/public/#{map}")
+    retr_string, s = Open3.capture2e("python lib/parser/civ5replay.py -H #{destination} #{APP_ROOT}/public/#{filename} -m #{APP_ROOT}/public/#{map}")
+    #puts "retr_string: #{retr_string}, s: #{s.inspect}"
+    #success = system("python lib/parser/civ5replay.py -H #{destination} #{APP_ROOT}/public/#{filename} -m #{APP_ROOT}/public/#{map}")
   else
-    success = system("python #{APP_ROOT}/lib/parser/civ5replay.py -H #{destination} #{APP_ROOT}/public/#{filename}")
+    retr_string, s = Open3.capture2e("python lib/parser/civ5replay.py -H #{destination} #{APP_ROOT}/public/#{filename}")
+    #puts "retr_string: #{retr_string}, s: #{s.inspect}"
+    #success = system("python lib/parser/civ5replay.py -H #{destination} #{APP_ROOT}/public/#{filename}")
   end
-  success && $?.exitstatus == 0
+  if s.success? then
+    return [retr_string, true]
+  else
+    return [retr_string, false]
+  end
 end
 class ParseReplay
   @queue = :replay_parser
@@ -14,7 +22,8 @@ class ParseReplay
     temppath = "#{APP_ROOT}/public/uploads/tmp/" + tempfile + ".html"
     if @replay.original.current_path =~ /[.]civ5replay/ then
       # It's a .civ5replay file
-      if parse(@replay.original, temppath, @replay.map) then
+      retr_string, success = parse(@replay.original, temppath, @replay.map)
+      if success then
         # python script has generated a html in tf, lets save it
         begin
           @replay.replay = File.open(temppath)
@@ -25,6 +34,7 @@ class ParseReplay
           p @replay.errors.full_messages
         end
       else
+        @replay.trace  = retr_string
         @replay.generated = false
         @replay.save!
         raise "Catastrophic failure parsing :-D"     

@@ -1,7 +1,7 @@
 %p<
   = @replay.description
   %br
-  - if @replay.generated then
+  - if @replay.generated and !@replay.trace then
     = File.new(@replay.replay.path).read()
     %div{:id=>"disqus_thread"}
       :javascript
@@ -23,11 +23,22 @@
         %a{:href=>"http://disqus.com", :class=>"dsq-brlink"} 
           blog comments powered by 
           %span{:class=>"logo-disqus"} Disqus
-  - else
-    Replay not generated yet or there was some kind of error. (If this is not here after a few minutes tops its safe to say it was probably an error.)
-    %a{:href=>'http://forums.civfanatics.com/showthread.php?t=402101'} If something breaks go here.
-    
-    
-   
-
-    
+  - elsif !@replay.generated then
+    -# This is a dirty hack (sort of), since all the old failed replays lack the trace field. I can fix it later, when they have it, or I can just not care? I'm the only one that will see this anyway.
+    %p There was a problem parsing this replay:
+    %a{:id => 'error-toggle'} Toggle error
+    #errorbox
+      =@replay.trace
+  - elsif !@replay.generated and !@replay.trace then
+    %p Replay has not been generated yet, please reload the page in a moment! 
+:javascript
+  $(document).ready(function() {
+    // hides the slickbox as soon as the DOM is ready
+    $('#errorbox').hide();
+ 
+    // toggles the slickbox on clicking the noted link  
+    $('#error-toggle').click(function() {
+      $('#errorbox').toggle(400);
+      return false;
+    });
+  }); 
