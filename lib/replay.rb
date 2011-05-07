@@ -7,6 +7,7 @@ class Replay
   mount_uploader :original, OriginalUploader
   mount_uploader :replay, ReplayUploader
   mount_uploader :map, MapUploader
+  field :trace
   field :generated, :type => Boolean, :default => false
   validates_presence_of :description
   validates_presence_of :original
