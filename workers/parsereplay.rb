@@ -1,10 +1,19 @@
 def parse(filename, destination, map)
   if not map.blank? then
-    success = system("python lib/parser/civ5replay.py -H #{destination} #{APP_ROOT}/public/#{filename} -m #{APP_ROOT}/public/#{map}")
+    retr_string, s = Open3.capture2e("python lib/parser/civ5replay.py -H #{destination} #{APP_ROOT}/public/#{filename} -m #{APP_ROOT}/public/#{map}")
+    puts "retr_string: #{retr_string}, s: #{s.inspect}"
+    #success = system("python lib/parser/civ5replay.py -H #{destination} #{APP_ROOT}/public/#{filename} -m #{APP_ROOT}/public/#{map}")
   else
-    success = system("python lib/parser/civ5replay.py -H #{destination} #{APP_ROOT}/public/#{filename}")
+    retr_string, s = Open3.capture2e("python lib/parser/civ5replay.py -H #{destination} #{APP_ROOT}/public/#{filename}")
+    puts "retr_string: #{retr_string}, s: #{s.inspect}"
+    #success = system("python lib/parser/civ5replay.py -H #{destination} #{APP_ROOT}/public/#{filename}")
   end
-  success && $?.exitstatus == 0
+  if s.success? then
+    return true
+  else
+    return false
+    puts retr_string
+  end
 end
 class ParseReplay
   @queue = :replay_parser
