@@ -23,7 +23,7 @@
         %a{:href=>"http://disqus.com", :class=>"dsq-brlink"} 
           blog comments powered by 
           %span{:class=>"logo-disqus"} Disqus
-  - elsif !@replay.generated then
+  - elsif !@replay.generated and @replay.trace then
     -# This is a dirty hack (sort of), since all the old failed replays lack the trace field. I can fix it later, when they have it, or I can just not care? I'm the only one that will see this anyway.
     %p There was a problem parsing this replay:
     %a{:id => 'error-toggle'} Toggle error
