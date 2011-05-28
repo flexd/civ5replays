@@ -5,6 +5,11 @@ GIT
     sinatra-cookie_thief (0.1.0)
       sinatra (>= 1.0)
 
+PATH
+  remote: ~/code/rack
+  specs:
+    rack (1.3.0.beta)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -29,7 +34,6 @@ GEM
       mongo (~> 1.3)
       tzinfo (~> 0.3.22)
       will_paginate (~> 3.0.pre)
-    rack (1.2.1)
     rack-flash (0.1.1)
       rack
     rack-test (0.5.6)
@@ -71,6 +75,7 @@ DEPENDENCIES
   carrierwave
   haml
   mongoid (~> 2.0)
+  rack!
   rack-flash
   rack-test
   rake

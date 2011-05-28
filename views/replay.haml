@@ -29,6 +29,7 @@
     %a{:id => 'error-toggle'} Toggle error
     #errorbox
       =@replay.trace
+      %a{:href=>@replay.original.url} Download replay original.
   - elsif !@replay.generated and !@replay.trace then
     %p Replay has not been generated yet, please reload the page in a moment! 
 :javascript
