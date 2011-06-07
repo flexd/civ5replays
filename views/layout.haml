@@ -15,6 +15,7 @@
               = flash[:error]
           %h1
             %a{:href => '/'}= SiteConfig.title
+            %g:plusone
       #content
         %a{:href => '/'} Home
         | 
@@ -28,6 +29,9 @@
         %br
         = yield
         %br
+       
+      #footer
+        %p#legal= "&mdash; It's all free, go nuts! #{Time.now.strftime('%Y')} #{SiteConfig.author} &mdash;"
     
     %script{:type=>"text/javascript", :src=>"http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"}
     :javascript
@@ -49,5 +53,4 @@
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
-      #footer
-        %p#legal= "&mdash; It's all free, go nuts! #{Time.now.strftime('%Y')} #{SiteConfig.author} &mdash;"
+      
