@@ -12,8 +12,14 @@ end
 
 error do
   e = request.env['sinatra.error']
+  cache_control :no_cache
   Kernel.puts e.backtrace.join("\n")
   'Application error'
+end
+# Let's set a default cache-control header for all requests
+
+before do
+  cache_control :public
 end
 
 helpers do
@@ -24,6 +30,15 @@ get '/news' do
 end
 get '/contact' do
   haml :contact
+end
+get '/testing' do
+  flash.now[:info] = "Hello, I'm testing!"
+  haml :testing
+end
+get '/testing2' do
+  cache_control :public, :max_age => 360
+ # last_modified (Time.now - 1.day).httpdate
+  'hello world'
 end
 post '/upload' do
   # Save files
@@ -37,16 +52,22 @@ post '/upload' do
     puts "That is not a savegame or map file silly!"
   end
   @replay.description = params[:description]
-  redirect '/', :error => "Something went wrong with saving the record: #{@replay.errors.inspect}" unless @replay.save
+  if not @replay.save then
+    flash.next[:error] =  "Something went wrong with saving the record: #{@replay.errors}"
+    redirect '/'
+  end
   # Hand replay off to resque.
   @replay.async_parse
   # Redirect the user to where the replay will appear.
   # TODO: Make a nice ajax loading thingy instead.
+  flash.next[:info] = 'Replay added successfully, parsing now!'
   redirect "/replay/#{@replay.id}"
 end
 get '/stats' do
   cache_control :public, :must_revalidate, :max_age => 360
   @replay_count = Replay.all.count
+  last_modified Replay.all.first.updated_at
+  etag @replay_count
   @parse_success = Replay.all(:conditions => {:generated => true}).count
   @parse_failure = Replay.all(:conditions => {:generated => false}).count
   haml :stats
@@ -71,6 +92,7 @@ end
 get '/replays' do
   cache_control :public, :must_revalidate, :max_age => 360
   @replays = Replay.where(:generated => true).order_by(:_id.desc).paginate :page => 1, :per_page => 25
+  last_modified @replays.first.updated_at
   haml :replays
 end
 get '/failed' do

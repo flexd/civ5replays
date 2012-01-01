@@ -50,3 +50,18 @@ a:hover {
 #logo a:hover {
   text-decoration: none;
 }
+.info {
+background-color:LightGoldenRodYellow
+}
+.error {
+color:red
+}
+.warning {
+color:yellow
+}
+.flash {
+border:1px dotted black;
+width:80%;
+text-align:center
+}
+

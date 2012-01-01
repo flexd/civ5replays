@@ -10,9 +10,6 @@
     #container
       #header
         #logo
-          - if flash.has?(:error) then
-            %h3{:class=>"error"}
-              = flash[:error]
           %h1
             %a{:href => '/'}= SiteConfig.title
             %g:plusone
@@ -26,6 +23,7 @@
         %a{:href => '/failed'} Failed jobs
         |
         %a{:href => '/stats'} Stats
+        %br
         %br
         = yield
         %br

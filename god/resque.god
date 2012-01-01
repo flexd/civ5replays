@@ -1,4 +1,4 @@
-sinatra_env   = ENV['RACK_ENV']  || "production"
+sinatra_env   = ENV["RACK_ENV"] || "production"
 sinatra_root  = "/home/civ5replays/civ5replays"
 num_workers = sinatra_env == 'production' ? 5 : 2
 
